@@ -1,0 +1,21 @@
+# Development Dockerfile
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies for both frontend and backend
+COPY app/package*.json ./
+RUN npm install
+
+COPY app/server/package*.json ./server/
+RUN cd server && npm install
+
+# Copy source code
+COPY app/ ./
+
+# Expose ports
+EXPOSE 3000 3001
+
+# Start development servers
+CMD ["sh", "-c", "npm start & cd server && npm run dev"]
